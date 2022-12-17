@@ -10,25 +10,16 @@ from textual.widgets import (
 
 
 class LoginForm(Container):
-    username = ""
-    password = ""
 
     def compose(self) -> ComposeResult:
         yield Static("Username", classes="label")
-        yield Input(placeholder="Username", name="username")
+        self.username = Input(placeholder="Username", name="username")
+        yield self.username
         yield Static("Password", classes="label")
-        yield Input(placeholder="Password", name="password", password=True)
+        self.password = Input(placeholder="Password", name="password", password=True)
+        yield self.password
         yield Static()
         yield Button("Login", variant="primary")
-
-    def on_input_changed(self, event: Input.Changed) -> None:
-        """Event handler called when an input is changed."""
-        if event.input.name == "username":
-            self.username = event.input.value
-            self.log(f"Input username changed: {self.username}")
-        if event.input.name == "password":
-            self.password = event.input.value
-            self.log(f"Input password changed: {self.password}")
 
     def on_button_pressed(self, event: Button.Pressed) -> None:
         """Event handler called when a button is pressed."""
@@ -38,7 +29,7 @@ class LoginForm(Container):
         #
         #          token = api.login(self.username, self.password)
 
-        self.log(f"Login button pressed ==> U:'{self.username}' P:'{self.password}'")
+        self.log(f"Login button pressed ==> U:'{self.username.value}' P:'{self.password.value}'")
 
 
 class Pancake(App):
